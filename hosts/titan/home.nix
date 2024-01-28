@@ -53,6 +53,22 @@
       yq-go # yaml processer https://github.com/mikefarah/yq
     ];
 
+    xdg = {
+      userDirs = {
+        enable = true;
+        createDirectories = true;
+        desktop = "$HOME/desktop";
+        documents = "$HOME/documents";
+        download = "$HOME/downloads";
+        music = "$HOME/media/music";
+        pictures = "$HOME/media/images";
+        publicShare = "$HOME/other/public";
+        videos = "$HOME/media/videos";
+        templates = "$HOME/other/templates";
+        extraConfig = { XDG_DEV_DIR = "$HOME/development"; };
+      };
+    };
+
     # This value determines the home Manager release that your
     # configuration is compatible with. This helps avoid breakage
     # when a new home Manager release introduces backwards
