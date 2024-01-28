@@ -1,4 +1,4 @@
-{ inputs, context, ... }: inputs.nixpkgs.lib.nixosSystem rec {
+{ inputs, context, overlays, ... }: inputs.nixpkgs.lib.nixosSystem rec {
   system = "x86_64-linux";
   modules = [
     context
@@ -7,6 +7,8 @@
     ../../options
     ({ config, pkgs, ... }: {
       imports = [ ./hardware.nix ./home.nix ];
+
+      nixpkgs.overlays = overlays;
 
       # Bootloader.
       boot.loader.systemd-boot.configurationLimit = 5;

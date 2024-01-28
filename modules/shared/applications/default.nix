@@ -1,3 +1,3 @@
 { ... }: {
-  imports = [ ./1password.nix ];
+  imports = [ ./1password.nix ./firefox.nix ];
 }
