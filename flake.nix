@@ -1,5 +1,5 @@
 {
-  description = "Preston's NixOS Flake";
+  description = "My Nix Configuration";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
@@ -7,20 +7,17 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";  
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
-    nixosConfigurations = {
-      titan = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.putquo = import ./home.nix;
-          }
-        ];
+  outputs = { self, nixpkgs, ... }@inputs: 
+    let 
+      context = { ... }: rec {
+        user.name = "putquo";
+        user.description = "Preston van Tonder";
+        git.name = user.description;
+        git.email = "46090392+putquo@users.noreply.github.com";
+      };
+    in {
+      nixosConfigurations = {
+        titan = import ./hosts/titan { inherit inputs context; };
       };
     };
-  };
 }
