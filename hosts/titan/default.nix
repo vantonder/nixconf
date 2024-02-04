@@ -3,12 +3,12 @@
   modules = [
     context
     inputs.home-manager.nixosModules.home-manager
-    ../../modules/shared
+    ../../modules
     ../../options
     ({ config, pkgs, ... }: {
       imports = [ ./hardware.nix ./home.nix ];
 
-      nixpkgs.overlays = overlays;
+      nixpkgs.overlays = overlays ++ [ (import ../../overlays/wezterm.nix { inherit inputs system; }) ];
 
       # Bootloader.
       boot.loader.systemd-boot.configurationLimit = 5;
@@ -89,8 +89,8 @@
 
       # Configure keymap in X11
       services.xserver = {
-        layout = "us";
-        xkbVariant = "";
+        xkb.layout = "us";
+        xkb.variant = "";
       };
 
       # Enable CUPS to print documents.
@@ -117,18 +117,23 @@
       # services.xserver.libinput.enable = true;
 
       # Define a user account. Don't forget to set a password with ‘passwd’.
-      users.users.${config.user.name} = {
+      users.users.${config.user.identifier} = {
         isNormalUser = true;
-        description = config.user.description;
+        description = config.user.name;
         extraGroups = [ "networkmanager" "wheel" ];
         packages = with pkgs; [
           firefox
         ];
       };
 
+      # Define the fonts to install
+      fonts.packages = with pkgs; [
+        (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
+      ];
+
       # Enable automatic login for the user
       services.xserver.displayManager.autoLogin.enable = true;
-      services.xserver.displayManager.autoLogin.user = config.user.name;
+      services.xserver.displayManager.autoLogin.user = config.user.identifier;
 
       # Work around for automatic login with GNOME
       systemd.services."getty@tty1".enable = false;
@@ -142,11 +147,8 @@
       environment.systemPackages = with pkgs; [
         curl
         git
-        vim
         wget
       ];
-
-      environment.variables.EDITOR = "vim";
 
       # Some programs need SUID wrappers, can be configured further or are
       # started in user sessions.
