@@ -1,3 +1,6 @@
-{ ... }: {
-  imports = [ ./git.nix ./user.nix ];
+{
+  imports = [ 
+    ./git.nix 
+    ./user.nix
+  ];
 }
