@@ -1,7 +1,7 @@
 { config, pkgs, ... }: {
-  home-manager.users.${config.user.name} = {
-    home.username = config.user.name;
-    home.homeDirectory = "/home/${config.user.name}";
+  home-manager.users.${config.user.identifier} = {
+    home.username = config.user.identifier;
+    home.homeDirectory = "/home/${config.user.identifier}";
 
     # packages that should be installed to the user profile.
     home.packages = with pkgs; [
