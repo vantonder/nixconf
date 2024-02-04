@@ -50,6 +50,9 @@
       services.xserver.displayManager.gdm.enable = true;
       services.xserver.desktopManager.gnome.enable = true;
 
+      # Disable Wayland
+      services.xserver.displayManager.gdm.wayland = false;
+
       # Configure Nvidia
       # Enable OpenGL      
       hardware.opengl = {

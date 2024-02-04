@@ -5,8 +5,6 @@
       extraConfig = ''
         local config = {};
 
-        config.enable_wayland = false;
-
         config.font_size = 12;
         config.font = wezterm.font 'JetBrains Mono';
 
