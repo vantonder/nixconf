@@ -1,6 +1,7 @@
 { config, ... }: {
   imports = [
     ./1password.nix
+    ./direnv.nix
     ./firefox.nix
     ./git.nix
     ./starship.nix
