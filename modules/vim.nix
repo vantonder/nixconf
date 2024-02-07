@@ -1,4 +1,8 @@
-{ pkgs, ... }: {
+{ config, pkgs, ... }: 
+let
+  id = config.user.identifier;
+in {
+  environment.variables.EDITOR = "vim";
   environment.systemPackages = with pkgs; [
     ((vim_configurable.override {}).customize {
       name = "vim";
@@ -34,4 +38,8 @@
       '';
     })
   ];
+  home-manager.users.${id}.programs.vim = {
+    enable = true;
+    defaultEditor = true;
+  };  
 }
