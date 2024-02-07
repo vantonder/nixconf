@@ -2,6 +2,9 @@
   home-manager.users.${config.user.identifier} = {
     programs.starship = {
       enable = true;
+      enableNushellIntegration = false;
+      enableIonIntegration = false;
+      enableZshIntegration = false;
       settings = {
         username = {
           disabled = false;
