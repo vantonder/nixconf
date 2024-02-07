@@ -3,6 +3,7 @@
     ./1password.nix
     ./direnv.nix
     ./firefox.nix
+    ./fish.nix
     ./git.nix
     ./starship.nix
     ./vim.nix
