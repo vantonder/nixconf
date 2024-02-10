@@ -10,6 +10,12 @@
 
       nixpkgs.overlays = overlays ++ [ (import ../../overlays/wezterm.nix { inherit inputs system; }) ];
 
+      security.pam.u2f = {
+        enable = true;
+        control = "sufficient";
+        cue = true;
+      };
+
       # Bootloader.
       boot.loader.systemd-boot.configurationLimit = 5;
       boot.loader.systemd-boot.enable = true;
@@ -150,6 +156,7 @@
       environment.systemPackages = with pkgs; [
         curl
         git
+        pam_u2f
         wget
       ];
 
