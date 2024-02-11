@@ -5,6 +5,7 @@
     ./firefox.nix
     ./fish.nix
     ./git.nix
+    ./podman.nix
     ./starship.nix
     ./vim.nix
     ./wezterm.nix
