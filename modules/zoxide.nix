@@ -1,4 +1,4 @@
-{ config, ..., }:
+{ config, ... }:
 let
   id = config.user.identifier;
 in {
