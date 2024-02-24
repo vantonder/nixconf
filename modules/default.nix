@@ -7,8 +7,10 @@
     ./git.nix
     ./podman.nix
     ./starship.nix
+    ./steam.nix
     ./vim.nix
     ./wezterm.nix
+    ./zoxide.nix
   ];
 
   nix = {
