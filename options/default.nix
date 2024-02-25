@@ -27,7 +27,7 @@
     dirs.home = mkOption {
       type = types.str;
       description = "The home directory of the user.";
-      example = "$HOME/development";
+      example = "/home/johndoe";
     };
 
     dirs.development = mkOption {
