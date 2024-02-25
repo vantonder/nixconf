@@ -40,10 +40,7 @@ in systemFunc rec {
       };
     }
     {
-      _module.args = { 
-        inherit overlays;
-        currentUser = user;
-      };
+      _module.args = { inherit overlays; };
     }
   ];
 }
