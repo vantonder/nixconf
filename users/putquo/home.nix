@@ -200,6 +200,11 @@ in {
       source = ./wezterm/themes;
       recursive = true;
     };
+
+    "Yubico/u2f_keys" = {
+      source = ./Yubico/u2f_keys;
+    };
+
   };
 
   # This value determines the home Manager release that your
