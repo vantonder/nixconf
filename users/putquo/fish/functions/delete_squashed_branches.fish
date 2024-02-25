@@ -1,6 +1,6 @@
 function delete_squashed_branches --description 'Delete local branches that have been squash-merged into the default branch'
     # Define the default branch name
-    set default_branch "main"
+    set default_branch (get_default_branch)
 
     # Fetch the latest changes from the remote
     git fetch origin
