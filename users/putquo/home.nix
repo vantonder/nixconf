@@ -112,6 +112,7 @@ in {
         gb = "git branch";
         gba = "git branch --all";
         gbd = "git branch --delete";
+        gbds = "delete_squashed_branches";
         gbD = "git branch --delete --force";
         gbm = "git branch --move";
         # checkout
@@ -193,6 +194,11 @@ in {
   };
 
   xdg.configFile = {
+    "fish/functions" = {
+      source = ./fish/functions;
+      recursive = true;
+    };
+
     "wezterm/wezterm.lua" = lib.mkForce {
       source = ./wezterm/wezterm.lua;
     };
