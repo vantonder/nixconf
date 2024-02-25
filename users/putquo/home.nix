@@ -152,6 +152,7 @@ in {
         commit.gpgsign = true;
         gpg.format = "ssh";
         gpg."ssh".program = "${pkgs._1password-gui}/bin/op-ssh-sign";
+        pull.rebase = "true";
         user.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK4z+GCnpEmPq2uRl1Ol8a83Xjmeiqk1q8XV3cZh7pWZ";
       };
     };
