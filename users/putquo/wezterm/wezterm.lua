@@ -10,11 +10,11 @@ end
 
 local function scheme_for_appearance(appearance)
   if appearance:find 'Dark' then
-    local scheme = require('themes/rose-pine-moon')
+    local scheme = require 'colors/rose-pine-moon'
     return { colors = scheme.colors(), window_frame = scheme.window_frame() }
   end
 
-  local scheme = require('themes/rose-pine-dawn')
+  local scheme = require 'colors/rose-pine-dawn'
   return { colors = scheme.colors(), window_frame = scheme.window_frame() }
 end
 

@@ -1,5 +1,5 @@
 {
-  description = "Nix-based configuration";
+  description = "My nix-based configuration";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -19,10 +19,8 @@
       mkSystem = import ./lib/mksystem.nix { inherit inputs nixpkgs overlays; };
     in {
       nixosConfigurations = {
-        #titan = import ./hosts/titan { inherit inputs context overlays; };
         titan = mkSystem "titan" {
           system = "x86_64-linux";
-          user = "putquo";
         };
       };
     };
