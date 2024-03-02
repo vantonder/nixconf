@@ -15,6 +15,7 @@
   presets.system.gaming.enable = true;
   presets.system.gnome.enable = true;
   presets.system.nvidia.enable = true;
+  presets.system.security.enable = true;
 
   security.rtkit.enable = true;
 
