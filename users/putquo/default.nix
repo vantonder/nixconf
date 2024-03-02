@@ -8,7 +8,7 @@ in {
     users.${user}.enable = mkEnableOption (mdDoc "putquo preset");
   };
 
-  config = {
+  config = lib.mkIf config.users.${user}.enable {
     nixpkgs.overlays = overlays ++ [ (import ../../overlays/1password.nix) ];
 
     home-manager.users.${user} = {
