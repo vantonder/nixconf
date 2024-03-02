@@ -1,5 +1,5 @@
 # Print a message to indicate the start of the download process
-Write-Output "downloading latest release..."
+Write-Output "downloading latest NixOS WSL release..."
 
 # Define the API URL for the latest release of NixOS WSL
 $apiUrl = "https://api.github.com/repos/nix-community/nixos-wsl/releases/latest"
@@ -14,7 +14,7 @@ $assetName = "nixos-wsl.tar.gz"
 $asset = $releaseData.assets | Where-Object {$_.name -eq $assetName}
 
 # Define the output path for the downloaded asset
-$outputPath = Join-Path "$HOME\Documents" $assetName
+$outputPath = Join-Path "$HOME\Downloads" $assetName
 
 # Check if the asset was found
 if ($asset -ne $null) {
@@ -30,7 +30,7 @@ if ($asset -ne $null) {
 Write-Output "importing NixOS WSL distribution..."
 
 # Import the NixOS WSL distribution using the downloaded asset
-wsl --import DixOS "$HOME/DixOS" $outputPath --version 2
+wsl --import NixOS "$HOME/NixOS" $outputPath --version 2
 if (-not $?) {
     Write-Error "error during WSL import"
     exit
@@ -42,25 +42,28 @@ $nixPath = "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos:nixos-con
 
 # Construct the command to execute in the NixOS WSL environment
 $command = @"
-export NIX_PATH=$nixPath && \
-    $bin/nix-channel --update && \
-    $bin/nixos-rebuild switch && \
-    $bin/nix-shell -p git --run 'git clone https://github.com/putquo/nixos' && \
-    $bin/nix-shell -p git --run '$bin/nixos-rebuild boot --flake nixos/.#byte' && \
-    $bin/mv nixos .config/nixos
+export PATH=$bin && \
+    export NIX_PATH=$nixPath && \
+    nix-channel --update && \
+    nixos-rebuild switch && \
+    nix-shell -p git --run 'git clone https://github.com/putquo/nixconf' && \
+    nix-shell -p git --run 'nixos-rebuild boot --flake nixconf/.#byte' && \
+    rm -rf nixconf
 "@
 
 # Execute the command in the NixOS WSL distribution as root
-wsl -d DixOS --user root -- $bin/bash -c $command
+wsl -d NixOS --user root -- $bin/bash -c $command
 
 # Check if the command execution was successful
 if ($?) {
   # Terminate the NixOS session
-  wsl -t DixOS
+  wsl -t NixOS
   # Run and immediately exit a root session
-  wsl -d DixOS --user root exit
+  wsl -d NixOS --user root exit
   # Terminate the NixOS session again for good measure
-  wsl -t DixOS
+  wsl -t NixOS
+  # Set the default WSL distro
+  wsl -s NixOS
   Write-Output "successfully initialised NixOS distribution"
 } else {
     Write-Error "error during NixOS initialization"
