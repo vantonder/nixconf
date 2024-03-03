@@ -1,7 +1,7 @@
-{ config, lib, overlays, pkgs, wsl, ...}: let
+{ config, lib, pkgs, wsl, ...}:
+let
   user = "toil";
   name = "Preston van Tonder";
-  devDir = "workspace";
 in {
   options = with lib; {
     users.${user}.enable = mkEnableOption (mdDoc "studyportals preset");
@@ -48,10 +48,7 @@ in {
     };
 
     programs = {
-      _1password-gui = lib.mkIf (!wsl) {
-        enable = true;
-        polkitPolicyOwners = [ user ];
-      };
+      _1password-gui.polkitPolicyOwners = [ user ];
 
       fish.enable = true;
     };
@@ -63,11 +60,6 @@ in {
       shell = pkgs.fish;
     };
 
-    virtualisation = lib.mkIf (!wsl) {
-      podman.enable = true;
-      podman.defaultNetwork.settings.dns_enabled = true;
-    };
-
-    wsl.defaultUser = lib.mkIf wsl user;
+    wsl.defaultUser = user;
   };
 }

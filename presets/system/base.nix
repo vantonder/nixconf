@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ...}: {
+{ config, lib, pkgs, wsl, ...}: {
   options = with lib; {
     presets.system.base.enable = mkEnableOption (mdDoc "base system preset");
   };
@@ -18,6 +18,8 @@
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
 
+    programs._1password-gui.enable = lib.mkIf (!wsl) true;
+
     nix.extraOptions = "warn-dirty = false";
     nix.gc = {
       automatic = true;
@@ -30,5 +32,10 @@
     };
 
     nixpkgs.config.allowUnfree = true;
+
+    virtualisation = lib.mkIf (!wsl) {
+      podman.enable = true;
+      podman.defaultNetwork.settings.dns_enabled = true;
+    };
   };
 }

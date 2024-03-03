@@ -1,16 +1,13 @@
-{ config, lib, overlays, pkgs, wsl, ...}: let
+{ config, lib, pkgs, wsl, ...}:
+let
   user = "putquo";
   name = "Preston van Tonder";
-  email = "46090392+putquo@users.noreply.github.com";
-  devDir = "workspace";
 in {
   options = with lib; {
     users.${user}.enable = mkEnableOption (mdDoc "putquo preset");
   };
 
   config = lib.mkIf config.users.${user}.enable {
-    nixpkgs.overlays = overlays ++ [ (import ../../overlays/1password.nix) ];
-
     home-manager.users.${user} = {
       _module.args = { inherit wsl; };
 
@@ -22,7 +19,7 @@ in {
       presets.user.development.enable = true;
 
       programs = {
-        git.userEmail = email;
+        git.userEmail = "46090392+putquo@users.noreply.github.com";
         git.extraConfig.user.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK4z+GCnpEmPq2uRl1Ol8a83Xjmeiqk1q8XV3cZh7pWZ";
 
         vim.defaultEditor = true;
@@ -47,30 +44,16 @@ in {
     };
 
     programs = {
-      _1password-gui = {
-        enable = true;
-        polkitPolicyOwners = [ user ];
-      };
+      _1password-gui.polkitPolicyOwners = [ user ];
 
       fish.enable = true;
     };
-
-    services.xserver.displayManager.autoLogin.enable = true;
-    services.xserver.displayManager.autoLogin.user = user;
-
-    systemd.services."getty@tty1".enable = false;
-    systemd.services."autovt@tty1".enable = false;
 
     users.users.${user} = {
       extraGroups = [ "networkmanager" "wheel" ];
       isNormalUser = true;
       description = name;
       shell = pkgs.fish;
-    };
-
-    virtualisation = {
-      podman.enable = true;
-      podman.defaultNetwork.settings.dns_enabled = true;
     };
   };
 }

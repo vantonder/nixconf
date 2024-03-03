@@ -7,6 +7,8 @@ let
 
   presets = ../presets/system;
 
+  customBaseOverlays = import ../overlays/base;
+
   systemFunc = nixpkgs.lib.nixosSystem;
 in systemFunc rec {
   inherit system;
@@ -17,7 +19,7 @@ in systemFunc rec {
     presets
     userConfig
     nixosWsl
-    { nixpkgs.overlays = overlays; }
-    { _module.args = { inherit overlays wsl; }; }
+    { nixpkgs.overlays = if (!wsl) then overlays ++ customBaseOverlays else overlays; }
+    { _module.args = { inherit wsl; }; }
   ];
 }
