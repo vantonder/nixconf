@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, wsl, ... }: {
   options = with lib; {
     presets.user.development.enable = mkEnableOption (mdDoc "user development preset");
   };
@@ -66,11 +66,13 @@
         enable = true;
         extraConfig = {
           commit.gpgsign = true;
+          core.sshCommand = lib.mkIf wsl "ssh.exe";
           gpg.format = "ssh";
-          gpg.ssh.program = "${pkgs._1password-gui}/bin/op-ssh-sign";
+          gpg.ssh.program = lib.mkIf (!wsl) "${pkgs._1password-gui}/bin/op-ssh-sign";
           init.defaultBranch = "main";
           pull.rebase = true;
         };
+        userName = "Preston van Tonder"; 
       };
       
       ssh = {
@@ -89,7 +91,7 @@
         };
       };
 
-      wezterm.enable = true;
+      wezterm.enable = lib.mkIf (!wsl) true;
 
       zoxide = {
         enable = true;

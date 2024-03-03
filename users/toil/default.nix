@@ -9,6 +9,8 @@ in {
 
   config = lib.mkIf config.users.${user}.enable {
     home-manager.users.${user} = {
+      _module.args = { inherit wsl; };
+
       imports = [
         ../../presets/user
       ];
@@ -21,7 +23,6 @@ in {
       programs = {
         direnv.config.whitelist.prefix = [ "/home/${user}/${devDir}" ];
 
-        firefox.enable = with lib; mkIf wsl (mkForce false);
         firefox = {
           profiles.${user} = {
             id = 0;
@@ -34,12 +35,8 @@ in {
           };
         };
 
-        fish.shellAliases.ssh = lib.mkIf wsl "ssh.exe";
-
         git.userEmail = "prestonvantonder@studyportals.com";
-        git.userName = name; 
-        git.extraConfig.gpg.ssh.program = with lib; mkIf wsl (mkForce "/mnt/c/Users/PrestonvanTonder/AppData/Local/1Password/app/8/op-ssh-sign.exe");
-        git.extraConfig.core.sshCommand = lib.mkIf wsl "ssh.exe";
+        git.extraConfig.gpg.ssh.program = "/mnt/c/Users/PrestonvanTonder/AppData/Local/1Password/app/8/op-ssh-sign.exe";
         git.extraConfig.user.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICTceNH3o6069sOeRT/HmdBctb31UMdJXd1lgSYRytPy";
 
         starship.enableNushellIntegration = false;
@@ -48,8 +45,6 @@ in {
 
         vim.enable = true;
         vim.defaultEditor = true;
-
-        wezterm.enable = with lib; mkIf wsl (mkForce false);
 
         zoxide.enableNushellIntegration = false;
         zoxide.enableZshIntegration = false;

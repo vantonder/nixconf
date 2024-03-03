@@ -1,4 +1,4 @@
-{ config, lib, overlays, pkgs, ...}: let
+{ config, lib, overlays, pkgs, wsl, ...}: let
   user = "putquo";
   name = "Preston van Tonder";
   email = "46090392+putquo@users.noreply.github.com";
@@ -12,6 +12,8 @@ in {
     nixpkgs.overlays = overlays ++ [ (import ../../overlays/1password.nix) ];
 
     home-manager.users.${user} = {
+      _module.args = { inherit wsl; };
+
       imports = [
         ../../presets/user
       ];

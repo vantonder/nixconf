@@ -5,5 +5,6 @@
     ./gnome.nix
     ./i18n
     ./nvidia.nix
+    ./security.nix
   ];
 }

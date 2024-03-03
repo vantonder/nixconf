@@ -4,11 +4,11 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    homeManager.url = "github:nix-community/home-manager";
-    homeManager.inputs.nixpkgs.follows = "nixpkgs";  
+    home-manager.url = "github:nix-community/home-manager";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";  
 
-    nixWsl.url = "github:nix-community/nixos-wsl";
-    nixWsl.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-wsl.url = "github:nix-community/nixos-wsl";
+    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
 
     nur.url = "github:nix-community/nur";
   };

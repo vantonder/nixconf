@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, wsl, ... }: {
   options = with lib; {
     presets.user.base.enable = mkEnableOption (mdDoc "base user preset");
   };
@@ -14,7 +14,7 @@
     ];
 
     programs = {
-      firefox.enable = true;
+      firefox.enable = lib.mkIf wsl true;
       fish = {
         enable = true;
         interactiveShellInit = ''

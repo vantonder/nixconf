@@ -1,6 +1,7 @@
 { inputs, nixpkgs, overlays }: host: { system, wsl ? false }:
 let
-  homeManager = inputs.homeManager.nixosModules.home-manager;
+  homeManager = inputs.home-manager.nixosModules.home-manager;
+  nixosWsl = inputs.nixos-wsl.nixosModules.wsl;
   hostConfig = ../hosts/${host}/configuration.nix;
   userConfig = ../users;
 
@@ -15,7 +16,7 @@ in systemFunc rec {
     hostConfig
     presets
     userConfig
-    (if wsl then inputs.nixWsl.nixosModules.wsl else {})
+    nixosWsl
     { nixpkgs.overlays = overlays; }
     { _module.args = { inherit overlays wsl; }; }
   ];
