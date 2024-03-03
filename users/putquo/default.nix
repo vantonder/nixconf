@@ -22,41 +22,10 @@ in {
       presets.user.development.enable = true;
 
       programs = {
-        direnv.config.whitelist.prefix = [ "/home/${user}/${devDir}" ];
+        git.userEmail = email;
+        git.extraConfig.user.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK4z+GCnpEmPq2uRl1Ol8a83Xjmeiqk1q8XV3cZh7pWZ";
 
-        firefox = {
-          profiles.${user} = {
-            id = 0;
-            name = user;
-            isDefault = true;
-            extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-              onepassword-password-manager
-              ublock-origin
-            ];
-          };
-        };
-
-        git = {
-          userEmail = email;
-          userName = name; 
-          extraConfig.user.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK4z+GCnpEmPq2uRl1Ol8a83Xjmeiqk1q8XV3cZh7pWZ";
-        };
-
-        starship = {
-          enableNushellIntegration = false;
-          enableIonIntegration = false;
-          enableZshIntegration = false;
-        };
-
-        vim = {
-          enable = true;
-          defaultEditor = true;
-        };
-
-        zoxide = {
-          enableNushellIntegration = false;
-          enableZshIntegration = false;
-        };
+        vim.defaultEditor = true;
       };
 
       xdg = {
@@ -74,8 +43,6 @@ in {
 
           "Yubico/u2f_keys".source = ./Yubico/u2f_keys;
         };
-
-        userDirs.extraConfig = { XDG_DEV_DIR = "$HOME/${devDir}"; };
       };
     };
 
@@ -102,10 +69,8 @@ in {
     };
 
     virtualisation = {
-      podman = {
-        enable = true;
-        defaultNetwork.settings.dns_enabled = true;
-      };
+      podman.enable = true;
+      podman.defaultNetwork.settings.dns_enabled = true;
     };
   };
 }

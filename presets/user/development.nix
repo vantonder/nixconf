@@ -12,6 +12,7 @@
       ];
 
       direnv.enable = true;
+      direnv.config.whitelist.prefix = [ "${config.home.homeDirectory}/workspace" ];
       direnv.nix-direnv.enable = true;
 
       fish.shellAliases = {
@@ -68,11 +69,14 @@
         pull.rebase = true;
       };
       git.userName = "Preston van Tonder"; 
-      
+
       ssh.enable = true;
       ssh.extraConfig = "IdentityAgent ~/.1password/agent.sock";
 
       starship.enable = true;
+      starship.enableNushellIntegration = false;
+      starship.enableIonIntegration = false;
+      starship.enableZshIntegration = false;
       starship.settings = {
         username = {
           disabled = false;
@@ -81,9 +85,13 @@
         };
       };
 
+      vim.enable = true;
+
       wezterm.enable = lib.mkIf (!wsl) true;
 
       zoxide.enable = true;
+      zoxide.enableNushellIntegration = false;
+      zoxide.enableZshIntegration = false;
       zoxide.options = [ "--cmd" "cd" ];
     }; 
   };

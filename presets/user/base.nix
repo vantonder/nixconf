@@ -15,7 +15,16 @@
     home.stateVersion = osConfig.system.stateVersion;
 
     programs = {
-      firefox.enable = lib.mkIf wsl true;
+      firefox.enable = lib.mkIf (!wsl) true;
+      firefox.profiles.default = {
+        id = 0;
+        name = "default";
+        isDefault = true;
+        extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+          onepassword-password-manager
+          ublock-origin
+        ];
+      };
 
       fish.enable = true;
       fish.interactiveShellInit = ''
@@ -37,6 +46,8 @@
       publicShare = "$HOME/other/public";
       videos = "$HOME/media/videos";
       templates = "$HOME/other/templates";
+      
+      extraConfig = { XDG_DEV_DIR = "$HOME/workspace"; };
     };
   };
 }

@@ -19,33 +19,11 @@ in {
       presets.user.development.enable = true;
 
       programs = {
-        direnv.config.whitelist.prefix = [ "/home/${user}/${devDir}" ];
-
-        firefox = {
-          profiles.${user} = {
-            id = 0;
-            name = user;
-            isDefault = true;
-            extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-              onepassword-password-manager
-              ublock-origin
-            ];
-          };
-        };
-
         git.userEmail = "prestonvantonder@studyportals.com";
         git.extraConfig.gpg.ssh.program = "/mnt/c/Users/PrestonvanTonder/AppData/Local/1Password/app/8/op-ssh-sign.exe";
         git.extraConfig.user.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICTceNH3o6069sOeRT/HmdBctb31UMdJXd1lgSYRytPy";
 
-        starship.enableNushellIntegration = false;
-        starship.enableIonIntegration = false;
-        starship.enableZshIntegration = false;
-
-        vim.enable = true;
         vim.defaultEditor = true;
-
-        zoxide.enableNushellIntegration = false;
-        zoxide.enableZshIntegration = false;
       };
 
       xdg = {
@@ -66,8 +44,6 @@ in {
             "Yubico/u2f_keys".source = ./Yubico/u2f_keys;
           } else {})
         ];
-
-        userDirs.extraConfig = { XDG_DEV_DIR = "$HOME/${devDir}"; };
       };
     };
 
