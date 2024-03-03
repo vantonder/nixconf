@@ -1,4 +1,4 @@
-{ config, lib, pkgs, wsl, ... }: {
+{ config, lib, osConfig, pkgs, wsl, ... }: {
   options = with lib; {
     presets.user.base.enable = mkEnableOption (mdDoc "base user preset");
   };
@@ -12,6 +12,7 @@
       which
       zip
     ];
+    home.stateVersion = osConfig.system.stateVersion;
 
     programs = {
       firefox.enable = lib.mkIf wsl true;

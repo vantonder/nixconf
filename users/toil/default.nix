@@ -15,8 +15,6 @@ in {
         ../../presets/user
       ];
 
-      home.stateVersion = config.system.stateVersion;
-
       presets.user.base.enable = true;
       presets.user.development.enable = true;
 
