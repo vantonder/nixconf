@@ -16,13 +16,13 @@
 
     programs = {
       firefox.enable = lib.mkIf wsl true;
-      fish = {
-        enable = true;
-        interactiveShellInit = ''
-          set fish_greeting
-          fish_vi_key_bindings
-        '';
-      };
+
+      fish.enable = true;
+      fish.interactiveShellInit = ''
+        set fish_greeting
+        fish_vi_key_bindings
+      '';
+
       home-manager.enable = true;
     };
 

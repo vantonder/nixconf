@@ -15,24 +15,18 @@
       (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     ];
 
-    home-manager = {
-      useGlobalPkgs = true;
-      useUserPackages = true;
+    home-manager.useGlobalPkgs = true;
+    home-manager.useUserPackages = true;
+
+    nix.extraOptions = "warn-dirty = false";
+    nix.gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 1w";
     };
-
-    nix = {
-      extraOptions = "warn-dirty = false";
-      
-      gc = {
-        automatic = true;
-        dates = "weekly";
-        options = "--delete-older-than 1w";
-      };
-
-      settings = {
-        auto-optimise-store = true;
-        experimental-features = [ "nix-command" "flakes" ];
-      };
+    nix.settings = {
+      auto-optimise-store = true;
+      experimental-features = [ "nix-command" "flakes" ];
     };
 
     nixpkgs.config.allowUnfree = true;
