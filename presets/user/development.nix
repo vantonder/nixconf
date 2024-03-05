@@ -78,6 +78,11 @@
       starship.enableIonIntegration = false;
       starship.enableZshIntegration = false;
       starship.settings = {
+        nix_shell = {
+          format = "via [$symbol $name]($style) ";
+          symbol = "⛄";
+        };
+
         username = {
           disabled = false;
           show_always = true;
