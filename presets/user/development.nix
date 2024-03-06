@@ -65,7 +65,7 @@
         commit.gpgsign = true;
         core.sshCommand = lib.mkIf wsl "ssh.exe";
         gpg.format = "ssh";
-        gpg.ssh.program = lib.mkIf (!wsl) "${pkgs._1password-gui}/bin/op-ssh-sign";
+        gpg.ssh.program = lib.mkDefault "${pkgs._1password-gui}/bin/op-ssh-sign";
         init.defaultBranch = "main";
         pull.rebase = true;
       };

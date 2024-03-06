@@ -24,7 +24,7 @@ in {
 
       programs = {
         git.userEmail = "prestonvantonder@studyportals.com";
-        git.extraConfig.gpg.ssh.program = "/mnt/c/Users/PrestonvanTonder/AppData/Local/1Password/app/8/op-ssh-sign.exe";
+        git.extraConfig.gpg.ssh.program = lib.mkIf wsl "/mnt/c/Users/PrestonvanTonder/AppData/Local/1Password/app/8/op-ssh-sign.exe";
         git.extraConfig.user.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICTceNH3o6069sOeRT/HmdBctb31UMdJXd1lgSYRytPy";
 
         vim.defaultEditor = true;

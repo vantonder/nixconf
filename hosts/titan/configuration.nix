@@ -30,6 +30,7 @@
   time.timeZone = "Europe/Amsterdam";
 
   users.putquo.enable = true;
+  users.toil.enable = true;
 
   system.stateVersion = "23.11";
 }
