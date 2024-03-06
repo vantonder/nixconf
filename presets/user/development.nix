@@ -16,6 +16,7 @@
       direnv.nix-direnv.enable = true;
 
       fish.shellAliases = {
+        docker = lib.mkIf wsl "/run/current-system/sw/bin/docker";
         g = "git";
         ".." = "cd ../..";
       };
