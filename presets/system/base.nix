@@ -1,9 +1,14 @@
-{ config, lib, pkgs, wsl, ...}: {
-  options = with lib; {
-    presets.system.base.enable = mkEnableOption (mdDoc "base system preset");
+{ config, lib, pkgs, wsl, ...}: with lib; {
+  options = {
+    presets.system.base.enable = mkOption {
+      type = types.bool;
+      description = "Whether to enable the base system preset.";
+      default = true;
+      example = true;
+    };
   };
 
-  config = lib.mkIf config.presets.system.base.enable {
+  config = mkIf config.presets.system.base.enable {
     environment.systemPackages = with pkgs; [
       curl
       git
@@ -18,7 +23,7 @@
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
 
-    programs._1password-gui.enable = lib.mkIf (!wsl) true;
+    programs._1password-gui.enable = mkIf (!wsl) true;
 
     nix.extraOptions = "warn-dirty = false";
     nix.gc = {
@@ -33,7 +38,7 @@
 
     nixpkgs.config.allowUnfree = true;
 
-    virtualisation = lib.mkIf (!wsl) {
+    virtualisation = mkIf (!wsl) {
       podman.enable = true;
       podman.defaultNetwork.settings.dns_enabled = true;
     };

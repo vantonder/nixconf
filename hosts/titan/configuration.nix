@@ -10,12 +10,12 @@
   networking.hostName = "titan";
   networking.networkmanager.enable = true;
 
-  presets.system.base.enable = true;
   presets.system.i18n.dutch.enable = true;
   presets.system.gaming.enable = true;
   presets.system.gnome.enable = true;
   presets.system.nvidia.enable = true;
   presets.system.security.enable = true;
+
   security.rtkit.enable = true;
 
   services.pipewire.enable = true;

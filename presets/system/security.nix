@@ -1,9 +1,9 @@
-{ config, lib, pkgs, ...}: {
-  options = with lib; {
-    presets.system.security.enable = mkEnableOption (mdDoc "base system preset");
+{ config, lib, pkgs, ...}: with lib; {
+  options = {
+    presets.system.security.enable = mkEnableOption "the security system preset";
   };
 
-  config = lib.mkIf config.presets.system.security.enable {
+  config = mkIf config.presets.system.security.enable {
     security.pam.u2f = {
       enable = true;
       control = "sufficient";

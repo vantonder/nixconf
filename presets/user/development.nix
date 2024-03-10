@@ -1,9 +1,9 @@
-{ config, lib, pkgs, wsl, ... }: {
-  options = with lib; {
-    presets.user.development.enable = mkEnableOption (mdDoc "user development preset");
+{ config, lib, pkgs, wsl, ... }: with lib; {
+  options = {
+    presets.user.development.enable = mkEnableOption "the development user preset";
   };
 
-  config = lib.mkIf config.presets.user.development.enable {
+  config = mkIf config.presets.user.development.enable {
     programs = {
       bat.enable = true;
       bat.extraPackages = with pkgs.bat-extras; [
@@ -16,7 +16,7 @@
       direnv.nix-direnv.enable = true;
 
       fish.shellAliases = {
-        docker = lib.mkIf wsl "/run/current-system/sw/bin/docker";
+        docker = mkIf wsl "/run/current-system/sw/bin/docker";
         g = "git";
         ".." = "cd ../..";
       };
@@ -63,9 +63,9 @@
       git.enable = true;
       git.extraConfig = {
         commit.gpgsign = true;
-        core.sshCommand = lib.mkIf wsl "ssh.exe";
+        core.sshCommand = mkIf wsl "ssh.exe";
         gpg.format = "ssh";
-        gpg.ssh.program = lib.mkDefault "${pkgs._1password-gui}/bin/op-ssh-sign";
+        gpg.ssh.program = mkDefault "${pkgs._1password-gui}/bin/op-ssh-sign";
         init.defaultBranch = "main";
         pull.rebase = true;
       };
@@ -93,7 +93,7 @@
 
       vim.enable = true;
 
-      wezterm.enable = lib.mkIf (!wsl) true;
+      wezterm.enable = mkIf (!wsl) true;
 
       zoxide.enable = true;
       zoxide.enableNushellIntegration = false;

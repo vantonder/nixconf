@@ -1,9 +1,9 @@
-{ config, lib, pkgs, ... }: {
-  options = with lib; {
-    presets.system.gaming.enable = mkEnableOption (mdDoc "system gaming preset");
+{ config, lib, pkgs, ... }: with lib; {
+  options = {
+    presets.system.gaming.enable = mkEnableOption "the gaming system preset";
   };
 
-  config = lib.mkIf config.presets.system.gaming.enable {
+  config = mkIf config.presets.system.gaming.enable {
     programs = {
       steam.enable = true;
     };

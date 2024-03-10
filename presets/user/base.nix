@@ -1,9 +1,14 @@
-{ config, lib, osConfig, pkgs, wsl, ... }: {
-  options = with lib; {
-    presets.user.base.enable = mkEnableOption (mdDoc "base user preset");
+{ config, lib, osConfig, pkgs, wsl, ... }: with lib; {
+  options = {
+    presets.user.base.enable = mkOption {
+      type = types.bool;
+      description = "Whether to enable the base user preset.";
+      default = true;
+      example = true;
+    };
   };
 
-  config = lib.mkIf config.presets.user.base.enable {
+  config = mkIf config.presets.user.base.enable {
     home.packages = with pkgs; [
       fzf
       jq
@@ -15,7 +20,7 @@
     home.stateVersion = osConfig.system.stateVersion;
 
     programs = {
-      firefox.enable = lib.mkIf (!wsl) true;
+      firefox.enable = mkIf (!wsl) true;
       firefox.profiles.default = {
         id = 0;
         name = "default";

@@ -1,9 +1,9 @@
-{ config, lib, ... }: {
-  options = with lib; {
-    presets.system.nvidia.enable = mkEnableOption (mdDoc "Nvidia system preset");
+{ config, lib, ... }: with lib; {
+  options = {
+    presets.system.nvidia.enable = mkEnableOption "the Nvidia system preset";
   };
 
-  config = lib.mkIf config.presets.system.nvidia.enable {
+  config = mkIf config.presets.system.nvidia.enable {
     hardware.opengl = {
       enable = true;
       driSupport = true;

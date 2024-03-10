@@ -1,9 +1,9 @@
-{ config, lib, ...}: {
-  options = with lib; {
-    presets.system.i18n.dutch.enable = mkEnableOption (mdDoc "Dutch i18n");
+{ config, lib, ...}: with lib; {
+  options = {
+    presets.system.i18n.dutch.enable = mkEnableOption "the Dutch i18n preset";
   };
 
-  config = lib.mkIf config.presets.system.i18n.dutch.enable {
+  config = mkIf config.presets.system.i18n.dutch.enable {
     i18n.defaultLocale = "en_US.UTF-8";
     i18n.extraLocaleSettings = {
       LC_ADDRESS = "nl_NL.UTF-8";

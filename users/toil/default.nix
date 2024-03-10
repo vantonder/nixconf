@@ -15,7 +15,6 @@ in {
         ../../presets/user
       ];
 
-      presets.user.base.enable = true;
       presets.user.development.enable = true;
 
       home.packages = with pkgs; [
