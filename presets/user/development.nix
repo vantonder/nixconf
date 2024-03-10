@@ -1,4 +1,6 @@
-{ config, lib, pkgs, wsl, ... }: with lib; {
+{ config, lib, osConfig, pkgs, ... }: with lib; let 
+  wsl = osConfig.wsl.enable;
+in {
   options = {
     presets.user.development.enable = mkEnableOption "the development user preset";
   };

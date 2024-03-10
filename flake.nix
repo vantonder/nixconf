@@ -13,13 +13,13 @@
     nur.url = "github:nix-community/nur";
   };
 
-  outputs = { self, nixpkgs, ... }@inputs: 
+  outputs = { self, ... }@inputs: 
     let 
       overlays = [
         inputs.nur.overlay
       ];
 
-      mkSystem = import ./lib/mksystem.nix { inherit inputs nixpkgs overlays; };
+      mkSystem = import ./lib/mksystem.nix { inherit inputs overlays; };
     in {
       nixosConfigurations = {
         byte = mkSystem "byte" {

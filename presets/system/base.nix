@@ -1,4 +1,6 @@
-{ config, lib, pkgs, wsl, ...}: with lib; {
+{ config, lib, pkgs, ... }: with lib; let
+  wsl = config.wsl.enable;
+in {
   options = {
     presets.system.base.enable = mkOption {
       type = types.bool;

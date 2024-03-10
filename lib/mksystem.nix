@@ -1,25 +1,24 @@
-{ inputs, nixpkgs, overlays }: host: { system, wsl ? false }:
+{ inputs, overlays }: host: { system, wsl ? false }:
 let
-  homeManager = inputs.home-manager.nixosModules.home-manager;
-  nixosWsl = inputs.nixos-wsl.nixosModules.wsl;
-  hostConfig = ../hosts/${host}/configuration.nix;
-  userConfig = ../users;
-
-  presets = ../presets/system;
-
+  inherit (inputs.nixpkgs) lib;
   customBaseOverlays = import ../overlays/base;
-
-  systemFunc = nixpkgs.lib.nixosSystem;
+  homeManager = inputs.home-manager.nixosModules.home-manager;
+  hostConfig = ../hosts/${host}/configuration.nix;
+  nixosWsl = inputs.nixos-wsl.nixosModules.wsl;
+  pkgs = import inputs.nixpkgs { inherit system; };
+  specialArgs.schematics = import ../schematics { inherit pkgs; };
+  systemFunc = lib.nixosSystem;
+  systemPresets = ../presets/system;
+  userConfig = ../users;
 in systemFunc rec {
-  inherit system;
-
+  inherit specialArgs system;
   modules = [
     homeManager
     hostConfig
-    presets
-    userConfig
     nixosWsl
+    systemPresets
+    userConfig
     { nixpkgs.overlays = if (!wsl) then overlays ++ customBaseOverlays else overlays; }
-    { _module.args = { inherit wsl; }; }
+    { wsl.enable = wsl; }
   ];
 }
