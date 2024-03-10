@@ -11,9 +11,16 @@
   config = mkIf config.presets.system.base.enable {
     environment.systemPackages = with pkgs; [
       curl
+      fzf
       git
+      jq
+      ripgrep
+      tree
+      unzip
       vim
       wget
+      which
+      zip
     ];
 
     fonts.packages = with pkgs; [

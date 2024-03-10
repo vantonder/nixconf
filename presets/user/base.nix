@@ -9,14 +9,6 @@
   };
 
   config = mkIf config.presets.user.base.enable {
-    home.packages = with pkgs; [
-      fzf
-      jq
-      ripgrep
-      tree
-      which
-      zip
-    ];
     home.stateVersion = osConfig.system.stateVersion;
 
     programs = {
