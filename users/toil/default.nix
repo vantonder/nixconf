@@ -23,5 +23,7 @@ in schematics.forUser toil {
         "Yubico/u2f_keys".source = ./Yubico/u2f_keys;
       };
     };
+
+    users.users.${toil}.extraGroups = [ "docker" ];
   };
 }

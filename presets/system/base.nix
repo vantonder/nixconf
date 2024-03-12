@@ -49,9 +49,17 @@ in {
 
     systemd.services.docker-desktop-proxy.script = mkForce ''${config.wsl.wslConf.automount.root}/wsl/docker-desktop/docker-desktop-user-distro proxy --docker-desktop-root ${config.wsl.wslConf.automount.root}/wsl/docker-desktop "C:\Program Files\Docker\Docker\resources"'';
 
-    virtualisation = mkIf (!wsl) {
-      podman.enable = true;
-      podman.defaultNetwork.settings.dns_enabled = true;
+    virtualisation = {
+      docker = mkIf wsl {
+        enable = true;
+        enableOnBoot = true;
+        autoPrune.enable = true;
+      };
+
+      podman = mkIf (!wsl) {
+        enable = true;
+        defaultNetwork.settings.dns_enabled = true;
+      };
     };
 
     wsl.extraBin = with pkgs; [
