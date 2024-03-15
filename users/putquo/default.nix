@@ -9,8 +9,6 @@ in schematics.forUser putquo {
       programs = {
         git.userEmail = "46090392+putquo@users.noreply.github.com";
         git.extraConfig.user.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK4z+GCnpEmPq2uRl1Ol8a83Xjmeiqk1q8XV3cZh7pWZ";
-
-        vim.defaultEditor = true;
       };
 
       xdg.configFile = {

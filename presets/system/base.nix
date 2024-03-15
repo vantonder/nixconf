@@ -15,7 +15,11 @@ in {
       curl
       fzf
       git
+      go
       jq
+      libgccjit
+      lua
+      nodejs_latest
       ripgrep
       tree
       unzip
