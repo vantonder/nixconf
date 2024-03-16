@@ -21,6 +21,7 @@ in {
       lua
       nodejs_latest
       ripgrep
+      tailscale
       tree
       unzip
       vim
