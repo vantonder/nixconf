@@ -55,7 +55,7 @@ in {
     systemd.services.docker-desktop-proxy.script = mkForce ''${config.wsl.wslConf.automount.root}/wsl/docker-desktop/docker-desktop-user-distro proxy --docker-desktop-root ${config.wsl.wslConf.automount.root}/wsl/docker-desktop "C:\Program Files\Docker\Docker\resources"'';
 
     virtualisation = {
-      docker = mkIf wsl {
+      docker = {
         enable = true;
         enableOnBoot = true;
         autoPrune.enable = true;

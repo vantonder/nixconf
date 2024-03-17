@@ -36,7 +36,7 @@
         };
 
         users.users.${user} = {
-          extraGroups = [ "networkmanager" "wheel" ];
+          extraGroups = [ "docker" "networkmanager" "wheel" ];
           isNormalUser = true;
           description = "Preston van Tonder";
           shell = pkgs.fish;
