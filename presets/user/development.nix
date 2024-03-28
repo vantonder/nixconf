@@ -83,7 +83,17 @@ in {
       starship.settings = {
         nix_shell = {
           format = "via [$symbol $name]($style) ";
-          symbol = "⛄";
+          symbol = "󱄅";
+        };
+
+        nodejs = {
+          format = "using [$symbol ($version)]($style) ";
+          symbol = "";
+        };
+
+        php = {
+          format = "using [$symbol ($version)]($style) ";
+          symbol = "";
         };
 
         username = {
