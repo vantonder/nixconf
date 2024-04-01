@@ -4,6 +4,7 @@ in schematics.forUser putquo {
   inherit config;
   withOverrides = {
     home-manager.users.${putquo} = {
+      presets.user.dconf.enable = true;
       presets.user.development.enable = true;
 
       programs = {
