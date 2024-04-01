@@ -10,7 +10,7 @@ let
   systemFunc = lib.nixosSystem;
   systemPresets = ../presets/system;
   userConfig = ../users;
-in systemFunc rec {
+in systemFunc {
   inherit specialArgs system;
   modules = [
     homeManager

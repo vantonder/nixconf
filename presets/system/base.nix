@@ -16,15 +16,18 @@ in {
       fzf
       git
       go
+      jellyfin-web
       jq
       libgccjit
       lua
       nodejs_latest
+      protonvpn-gui
       ripgrep
       tailscale
       tree
       unzip
       vim
+      wireguard-tools
       wget
       which
       zip
@@ -51,6 +54,14 @@ in {
     };
 
     nixpkgs.config.allowUnfree = true;
+
+    services.jellyfin.enable = true;
+    services.jellyfin.openFirewall = true;
+
+    services.nzbget.enable = true;
+
+    services.xserver.desktopManager.xterm.enable = false;
+    services.xserver.excludePackages = [ pkgs.xterm ];
 
     systemd.services.docker-desktop-proxy.script = mkForce ''${config.wsl.wslConf.automount.root}/wsl/docker-desktop/docker-desktop-user-distro proxy --docker-desktop-root ${config.wsl.wslConf.automount.root}/wsl/docker-desktop "C:\Program Files\Docker\Docker\resources"'';
 
