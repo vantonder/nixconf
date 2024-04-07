@@ -18,6 +18,8 @@ in {
       configFile = pkgs.writeText "Caddyfile" ''
         titan.tawny-snapper.ts.net,
         localhost {
+          reverse_proxy localhost:8082
+
           redir /media /media/
           reverse_proxy /media/* localhost:8096
 
@@ -31,6 +33,115 @@ in {
           reverse_proxy /series/* localhost:8989
         }
       '';
+    };
+
+    services.homepage-dashboard = {
+      enable = true;
+      environmentFile = "/private/homepage/secrets";
+      bookmarks = [
+        {
+          Development = [
+            { GitHub = [{ abbr = "GH"; href = "https://github.com"; }]; }
+          ];
+        }
+      ];
+      services = [
+        {
+          Media = [
+            {
+              Jellyfin = {
+                description = "Media Server";
+                href = "https://titan.tawny-snapper.ts.net/media";
+                icon = "jellyfin.svg";
+                widget = {
+                  integrations = [
+                    {
+                      color = "amber";
+                      service_group = "Media";
+                      service_name = "Radarr";
+                      type = "radarr";
+                    }
+                    {
+                      color = "teal";
+                      service_group = "Media";
+                      service_name = "Sonarr";
+                      type = "sonarr";
+                    }
+                  ];
+                  type = "calendar";
+                };
+              };
+            }
+            {
+              Radarr = {
+                description = "Movie Management";
+                href = "https://titan.tawny-snapper.ts.net/movies";
+                icon = "radarr.svg";
+                widget = {
+                  key = "{{HOMEPAGE_VAR_RADARR}}";
+                  type = "radarr";
+                  url = "http://localhost:7878";
+                };
+              };
+            }
+            {
+              Sonarr = {
+                description = "Series Management";
+                href = "https://titan.tawny-snapper.ts.net/series";
+                icon = "sonarr.svg";
+                widget = {
+                  key = "{{HOMEPAGE_VAR_SONARR}}";
+                  type = "sonarr";
+                  url = "http://localhost:8989";
+                };
+              };
+            }
+          ];
+        }
+        {
+          Files = [
+            { 
+              SABnzbd = { 
+                description = "Newsreader"; 
+                href = "https://titan.tawny-snapper.ts.net/newsreader"; 
+                icon = "sabnzbd-alt.svg";
+                widget = {
+                  key = "{{HOMEPAGE_VAR_SABNZBD}}";
+                  type = "sabnzbd";
+                  url = "http://localhost:8080";
+                };
+              }; 
+            }
+          ];
+        }
+      ];
+      settings = {
+        headerStyle = "clean";
+        hideVersion = true;
+        title = "Dashboard";
+        quicklaunch = {
+          hideInternetSearch = true;
+          hideVisitURL = true;
+          showSearchSuggestions = true;
+        };
+      };
+      widgets = [
+        {
+          openweathermap = {
+            apiKey = "{{HOMEPAGE_VAR_OPENWEATHERMAP}}";
+            cache = 5;
+            provider = "openweathermap";
+            units = "metric";
+          };
+        }
+        {
+          resources = {
+            cpu = true;
+            memory = true;
+            disk = "/";
+          };
+        }
+      ];
     };
 
     services.jellyfin = {
