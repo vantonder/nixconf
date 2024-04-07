@@ -16,28 +16,31 @@ in {
     services.caddy = {
       enable = true;
       configFile = pkgs.writeText "Caddyfile" ''
-        localhost
+        titan.tawny-snapper.ts.net,
+        localhost {
+          redir /media /media/
+          reverse_proxy /media/* localhost:8096
 
-        redir /media /media/
-        reverse_proxy /media/* localhost:8096
+          redir /movies /movies/
+          reverse_proxy /movies/* localhost:7878
 
-        redir /movies /movies/
-        reverse_proxy /movies/* localhost:7878
+          redir /newsreader /newsreader/
+          reverse_proxy /newsreader/* localhost:8080
 
-        redir /newsreader /newsreader/
-        handle_path /newsreader/* {
-          rewrite * /sabnzbd{path}
-          reverse_proxy localhost:8080
+          redir /series /series/
+          reverse_proxy /series/* localhost:8989
         }
-
-        redir /series /series/
-        reverse_proxy /series/* localhost:8989
       '';
     };
 
     services.jellyfin = {
       enable = true;
       openFirewall = true;
+      inherit group user;
+    };
+
+    services.radarr = {
+      enable = true;
       inherit group user;
     };
 
@@ -51,10 +54,7 @@ in {
       inherit group user;
     };
 
-    services.radarr = {
-      enable = true;
-      inherit group user;
-    };
+    services.tailscale.permitCertUid = "caddy";
 
     systemd.tmpfiles.settings.mediaDirs = {
       "/var/lib/media/series"."d" = {

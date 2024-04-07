@@ -55,10 +55,7 @@ in {
 
     nixpkgs.config.allowUnfree = true;
 
-    services.jellyfin.enable = true;
-    services.jellyfin.openFirewall = true;
-
-    services.nzbget.enable = true;
+    services.tailscale.enable = true;
 
     services.xserver.desktopManager.xterm.enable = false;
     services.xserver.excludePackages = [ pkgs.xterm ];
