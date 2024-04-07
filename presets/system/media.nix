@@ -57,12 +57,12 @@ in {
     services.tailscale.permitCertUid = "caddy";
 
     systemd.tmpfiles.settings.mediaDirs = {
-      "/var/lib/media/series"."d" = {
+      "${dataDir}/series"."d" = {
         mode = "770";
         inherit group user;
       };
 
-      "/var/lib/media/movies"."d" = {
+      "${dataDir}/movies"."d" = {
         mode = "770";
         inherit group user;
       };
