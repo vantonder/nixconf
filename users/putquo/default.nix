@@ -16,5 +16,7 @@ in schematics.forUser putquo {
         "Yubico/u2f_keys".source = ./Yubico/u2f_keys;
       };
     };
+
+    users.users.${putquo}.extraGroups = [ "media" ];
   };
 }
