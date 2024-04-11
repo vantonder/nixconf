@@ -8,6 +8,7 @@
   networking.hostName = "fractal";
   networking.networkmanager.enable = true;
 
+  presets.system.dns.enable = true;
   presets.system.i18n.dutch.enable = true;
   presets.system.media.enable = true;
 

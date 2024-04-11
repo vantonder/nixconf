@@ -25,6 +25,20 @@ in {
         localhost {
           reverse_proxy localhost:8082
 
+          redir /books /books/
+          reverse_proxy /books/* localhost:8787
+
+          redir /dns /dns/
+          route /dns/* {
+            uri strip_prefix /dns
+            reverse_proxy localhost:3000 {
+              header_down Location /login.html /dns/login.html
+            }
+          }
+
+          redir /indexers /indexers/
+          reverse_proxy /indexers/* localhost:9696
+
           redir /media /media/
           reverse_proxy /media/* localhost:8096
 
@@ -147,7 +161,14 @@ in {
       inherit group user;
     };
 
+    services.prowlarr.enable = true;
+
     services.radarr = {
+      enable = true;
+      inherit group user;
+    };
+
+    services.readarr = {
       enable = true;
       inherit group user;
     };
@@ -165,7 +186,12 @@ in {
     services.tailscale.permitCertUid = "caddy";
 
     systemd.tmpfiles.settings.mediaDirs = {
-      "${dataDir}/series"."d" = {
+      "${dataDir}/audiobooks"."d" = {
+        mode = "770";
+        inherit group user;
+      };
+
+      "${dataDir}/books"."d" = {
         mode = "770";
         inherit group user;
       };
@@ -174,6 +200,12 @@ in {
         mode = "770";
         inherit group user;
       };
+
+      "${dataDir}/series"."d" = {
+        mode = "770";
+        inherit group user;
+      };
+
 
       "/var/lib/sabnzbd/downloads"."d" = {
         mode = "770";
