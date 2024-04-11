@@ -14,9 +14,7 @@
   };
 
   outputs = {self, ...} @ inputs: let
-    overlays = [
-      inputs.nur.overlay
-    ];
+    overlays = [];
 
     mkSystem = import ./lib/mksystem.nix {inherit inputs overlays;};
 
@@ -28,12 +26,7 @@
         });
   in {
     nixosConfigurations = {
-      byte = mkSystem "byte" {
-        system = "x86_64-linux";
-        wsl = true;
-      };
-
-      titan = mkSystem "titan" {
+      fractal = mkSystem "fractal" {
         system = "x86_64-linux";
       };
     };

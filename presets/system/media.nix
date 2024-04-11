@@ -13,10 +13,15 @@ in {
   };
 
   config = mkIf config.presets.system.media.enable {
+    environment.systemPackages = with pkgs; [
+      jellyfin-ffmpeg
+      jellyfin-web
+    ];
+
     services.caddy = {
       enable = true;
       configFile = pkgs.writeText "Caddyfile" ''
-        titan.tawny-snapper.ts.net,
+        ${config.networking.hostName}.tawny-snapper.ts.net,
         localhost {
           reverse_proxy localhost:8082
 
@@ -37,7 +42,7 @@ in {
 
     services.homepage-dashboard = {
       enable = true;
-      environmentFile = "/private/homepage/secrets";
+      environmentFile = "/private/homepage";
       bookmarks = [
         {
           Development = [
@@ -51,7 +56,7 @@ in {
             {
               Jellyfin = {
                 description = "Media Server";
-                href = "https://titan.tawny-snapper.ts.net/media";
+                href = "https://${config.networking.hostName}.tawny-snapper.ts.net/media";
                 icon = "jellyfin.svg";
                 widget = {
                   integrations = [
@@ -75,7 +80,7 @@ in {
             {
               Radarr = {
                 description = "Movie Management";
-                href = "https://titan.tawny-snapper.ts.net/movies";
+                href = "https://${config.networking.hostName}.tawny-snapper.ts.net/movies";
                 icon = "radarr.svg";
                 widget = {
                   key = "{{HOMEPAGE_VAR_RADARR}}";
@@ -87,7 +92,7 @@ in {
             {
               Sonarr = {
                 description = "Series Management";
-                href = "https://titan.tawny-snapper.ts.net/series";
+                href = "https://${config.networking.hostName}.tawny-snapper.ts.net/series";
                 icon = "sonarr.svg";
                 widget = {
                   key = "{{HOMEPAGE_VAR_SONARR}}";
@@ -103,7 +108,7 @@ in {
             { 
               SABnzbd = { 
                 description = "Newsreader"; 
-                href = "https://titan.tawny-snapper.ts.net/newsreader"; 
+                href = "https://${config.networking.hostName}.tawny-snapper.ts.net/newsreader"; 
                 icon = "sabnzbd-alt.svg";
                 widget = {
                   key = "{{HOMEPAGE_VAR_SABNZBD}}";
@@ -126,14 +131,6 @@ in {
         };
       };
       widgets = [
-        {
-          openweathermap = {
-            apiKey = "{{HOMEPAGE_VAR_OPENWEATHERMAP}}";
-            cache = 5;
-            provider = "openweathermap";
-            units = "metric";
-          };
-        }
         {
           resources = {
             cpu = true;
