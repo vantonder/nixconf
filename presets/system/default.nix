@@ -1,5 +1,6 @@
 { config, lib, pkgs, ... }: with lib; {
   imports = [
+    ./automation.nix
     ./dns.nix
     ./i18n
     ./media.nix

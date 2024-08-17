@@ -21,9 +21,8 @@ in {
     services.caddy = {
       enable = true;
       configFile = pkgs.writeText "Caddyfile" ''
-        ${config.networking.hostName}.tawny-snapper.ts.net,
-        localhost {
-          reverse_proxy localhost:8082
+        ${config.networking.hostName}.tawny-snapper.ts.net {
+          reverse_proxy 192.168.178.48:8123
 
           redir /books /books/
           reverse_proxy /books/* localhost:8787
@@ -165,6 +164,7 @@ in {
 
     services.radarr = {
       enable = true;
+      openFirewall = true;
       inherit group user;
     };
 
@@ -175,11 +175,13 @@ in {
 
     services.sabnzbd = {
       enable = true;
+      openFirewall = true;
       inherit group user;
     };
 
     services.sonarr = {
       enable = true;
+      openFirewall = true;
       inherit group user;
     };
 

@@ -10,5 +10,6 @@
 
   config = mkIf config.presets.system.dns.enable {
     services.adguardhome.enable = true;
+    services.adguardhome.openFirewall = true;
   };
 }
