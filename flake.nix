@@ -1,43 +1,48 @@
 {
-  description = "My nix-based configuration";
+  description = "Nix-based system configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    devenv.url = "github:cachix/devenv";
 
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    haumea.url = "github:nix-community/haumea";
+    haumea.inputs.nixpkgs.follows = "nixpkgs";
 
-    nixos-wsl.url = "github:nix-community/nixos-wsl";
-    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
 
     nur.url = "github:nix-community/nur";
+
+    std.url = "github:divnix/std";
+    std.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = {self, ...} @ inputs: let
-    overlays = [];
-
-    mkSystem = import ./lib/mksystem.nix {inherit inputs overlays;};
-
-    supportedSystems = ["x86_64-linux"];
-    forEachSupportedSystem = f:
-      inputs.nixpkgs.lib.genAttrs supportedSystems (system:
-        f {
-          pkgs = import inputs.nixpkgs {inherit system;};
-        });
-  in {
-    nixosConfigurations = {
-      fractal = mkSystem "fractal" {
-        system = "x86_64-linux";
-      };
-    };
-
-    devShells = forEachSupportedSystem ({pkgs}: {
-      default = pkgs.mkShell {
-        packages = with pkgs; [
-          deadnix
-          statix
+  outputs = { nixpkgs, self, std, ... }@inputs:
+    let
+      system.harvest = target: path:
+        nixpkgs.lib.attrsets.mapAttrs
+          (systemName: { host, profiles, users }:
+            nixpkgs.lib.nixosSystem {
+              modules = [ host ] ++ profiles ++ users;
+            }
+          )
+          (std.harvest target path)."x86_64-linux";
+    in
+    std.growOn
+      {
+        inherit inputs;
+        cellsFrom = ./nix;
+        cellBlocks = [
+          # nixos
+          (std.blockTypes.functions "host")
+          (std.blockTypes.functions "system")
+          (std.blockTypes.functions "user")
+          # support
+          (std.blockTypes.functions "lib")
+          (std.blockTypes.functions "shell")
         ];
+      }
+      {
+        devShells = std.harvest self [ "support" "shell" ];
+        nixosConfigurations = system.harvest self [ "nixos" "system" ];
       };
-    });
-  };
 }
