@@ -3,7 +3,11 @@
   services.ollama.enable = true;
   services.ollama.acceleration = "cuda";
   services.ollama.host = "0.0.0.0";
-  services.ollama.loadModels = [ "qwen2.5-coder:32b" ];
+  services.ollama.loadModels = [
+    "gemma3:27b-it-q4_K_M"
+    "qwen2.5-coder:32b"
+    "qwq"
+  ];
 
   services.open-webui.enable = true;
   services.open-webui.environment = {
