@@ -4,7 +4,7 @@
   services.ollama.acceleration = "cuda";
   services.ollama.host = "0.0.0.0";
   services.ollama.loadModels = [
-    "gemma3:27b-it-q4_K_M"
+    "gemma3:27b-it-qat"
     "qwen2.5-coder:32b"
     "qwq"
   ];
