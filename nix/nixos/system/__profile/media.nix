@@ -9,11 +9,6 @@ let
   user = group;
 in
 {
-  environment.systemPackages = with pkgs; [
-    jellyfin-ffmpeg
-    jellyfin-web
-  ];
-
   services.caddy = {
     enable = true;
     configFile = pkgs.writeText "Caddyfile" ''
@@ -147,6 +142,15 @@ in
     enable = true;
     openFirewall = true;
     inherit group user;
+    package = pkgs.jellyfin.override {
+      jellyfin-ffmpeg = pkgs.jellyfin-ffmpeg.override {
+        ffmpeg_7-full = pkgs.ffmpeg_7-full.override {
+          withMfx = false;
+          withVpl = true;
+          withUnfree = true;
+        };
+      };
+    };
   };
 
   services.prowlarr.enable = true;
@@ -263,10 +267,15 @@ in
     "d '${sonarrSharedDataDir}' 0700 ${user} ${group} - -"
   ];
 
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "iHD";
+  };
+
   users.groups.${group} = { };
 
   users.users.${user} = {
     isSystemUser = true;
     inherit group;
+    extraGroups = [ "video" "render" ];
   };
 }

@@ -17,6 +17,7 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = [ "i915.enable_guc=3" ];
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 5;
@@ -31,6 +32,7 @@
   hardware.enableRedistributableFirmware = true;
   hardware.graphics.enable = true;
   hardware.graphics.extraPackages = with pkgs; [
+    intel-media-driver
     vpl-gpu-rt
   ];
 
