@@ -1,10 +1,7 @@
 { ... }@_haumeaArgs:
-{ config, lib, pkgs, utils, ... }@_nixosModuleArgs:
+{ config, pkgs, ... }@_nixosModuleArgs:
 let
   dataDir = "/var/lib/media";
-  sonarrDataDir = "/var/lib/sonarr/.config/NzbDrone";
-  sonarrSharedDataDir = "/var/lib/sonarr-shared/.config/NzbDrone";
-
   group = "media";
   user = group;
 in
@@ -30,9 +27,6 @@ in
 
         redir /series /series/
         reverse_proxy /series/* localhost:8989
-
-        redir /shared/series /shared/series/
-        reverse_proxy /shared/series/* localhost:8990
       }
     '';
   };
@@ -172,54 +166,10 @@ in
     inherit group user;
   };
 
-  systemd.services."sonarr" = {
-    description = "Sonarr";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
-    environment = {
-      SONARR__LOG__ANALYTICSENABLED = "false";
-      SONARR__SERVER__PORT = "8989";
-      SONARR__UPDATE__AUTOMATICALLY = "false";
-      SONARR__UPDATE__MECHANISM = "external";
-    };
-    serviceConfig = {
-      Type = "simple";
-      User = user;
-      Group = group;
-      ExecStart = utils.escapeSystemdExecArgs [
-        (lib.getExe pkgs.sonarr)
-        "-nobrowser"
-        "-data=${sonarrDataDir}"
-      ];
-      Restart = "on-failure";
-    };
-  };
-
-  systemd.services."sonarr-shared" = {
-    description = "Sonarr - Shared";
-    after = [ "network.target" ];
-    wantedBy = [ "multi-user.target" ];
-    environment = {
-      SONARR__LOG__ANALYTICSENABLED = "false";
-      SONARR__SERVER__PORT = "8990";
-      SONARR__UPDATE__AUTOMATICALLY = "false";
-      SONARR__UPDATE__MECHANISM = "external";
-    };
-    serviceConfig = {
-      Type = "simple";
-      User = user;
-      Group = group;
-      ExecStart = utils.escapeSystemdExecArgs [
-        (lib.getExe pkgs.sonarr)
-        "-nobrowser"
-        "-data=${sonarrSharedDataDir}"
-      ];
-      Restart = "on-failure";
-    };
-  };
-
-  networking.firewall = {
-    allowedTCPPorts = [ 8989 8990 ];
+  services.sonarr = {
+    enable = true;
+    openFirewall = true;
+    inherit group user;
   };
 
   services.tailscale.permitCertUid = "caddy";
@@ -245,15 +195,6 @@ in
       inherit group user;
     };
 
-    "${dataDir}/shared"."d" = {
-      mode = "770";
-      inherit group user;
-    };
-
-    "${dataDir}/shared/series"."d" = {
-      mode = "770";
-      inherit group user;
-    };
 
     "/var/lib/sabnzbd/downloads"."d" = {
       mode = "770";
@@ -263,8 +204,6 @@ in
 
   systemd.tmpfiles.rules = [
     "d ${dataDir} 0770 ${user} ${group} - -"
-    "d '${sonarrDataDir}' 0700 ${user} ${group} - -"
-    "d '${sonarrSharedDataDir}' 0700 ${user} ${group} - -"
   ];
 
   environment.sessionVariables = {
