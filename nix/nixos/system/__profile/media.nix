@@ -22,6 +22,12 @@ in
         redir /movies /movies/
         reverse_proxy /movies/* localhost:7878
 
+        redir /music /music/
+        reverse_proxy /music/* localhost:8686
+
+        redir /navidrome /navidrome/
+        reverse_proxy /navidrome/* localhost:4533
+
         redir /newsreader /newsreader/
         reverse_proxy /newsreader/* localhost:8080
 
@@ -147,6 +153,24 @@ in
     };
   };
 
+  services.lidarr = {
+    enable = true;
+    openFirewall = true;
+    inherit group user;
+  };
+
+  services.navidrome = {
+    enable = true;
+    openFirewall = true;
+    inherit group user;
+    settings = {
+      Address = "0.0.0.0";
+      BaseUrl = "/navidrome";
+      EnableInsightsCollector = false;
+      MusicFolder = "${dataDir}/music";
+    };
+  };
+
   services.prowlarr.enable = true;
 
   services.radarr = {
@@ -190,11 +214,15 @@ in
       inherit group user;
     };
 
-    "${dataDir}/series"."d" = {
+    "${dataDir}/music"."d" = {
       mode = "770";
       inherit group user;
     };
 
+    "${dataDir}/series"."d" = {
+      mode = "770";
+      inherit group user;
+    };
 
     "/var/lib/sabnzbd/downloads"."d" = {
       mode = "770";
