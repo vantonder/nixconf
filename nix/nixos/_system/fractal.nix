@@ -1,5 +1,5 @@
-{ cell, name, super, ... }@_haumeaArgs: {
-  host = cell.host.${name};
+{ name, root, super, ... }@_haumeaArgs: {
+  host = root.nixos.host.${name};
 
   profiles = [
     super.profile.media

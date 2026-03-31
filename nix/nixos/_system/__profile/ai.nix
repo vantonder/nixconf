@@ -1,7 +1,6 @@
 { ... }@_haumeaArgs:
 { config, pkgs, ... }@_nixosModuleArgs: {
   services.ollama.enable = true;
-  services.ollama.acceleration = "cuda";
   services.ollama.host = "0.0.0.0";
   services.ollama.loadModels = [
     "gemma3:27b-it-qat"

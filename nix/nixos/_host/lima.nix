@@ -17,28 +17,30 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelParams = [ "i915.enable_guc=3" ];
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 5;
 
-  fileSystems."/".device = "/dev/disk/by-uuid/b5bd666a-954d-49b0-8365-64d8518144ce";
+  fileSystems."/".device = "/dev/disk/by-label/able";
   fileSystems."/".fsType = "ext4";
-  fileSystems."/boot".device = "/dev/disk/by-uuid/569B-2B32";
+  fileSystems."/boot".device = "/dev/disk/by-label/BOOT";
   fileSystems."/boot".fsType = "vfat";
 
   hardware.cpu.intel.updateMicrocode = true;
   hardware.enableAllFirmware = true;
   hardware.enableRedistributableFirmware = true;
   hardware.graphics.enable = true;
-  hardware.graphics.extraPackages = with pkgs; [
-    intel-media-driver
-    vpl-gpu-rt
+  hardware.graphics.extraPackages = [
+    pkgs.nvidia-vaapi-driver
+    pkgs.vpl-gpu-rt
   ];
+  hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia.open = true;
 
   networking.hostName = name;
 
   services.fstrim.enable = true;
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   swapDevices = [ ];
   system.stateVersion = "23.11";

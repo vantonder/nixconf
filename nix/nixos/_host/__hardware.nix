@@ -1,4 +1,4 @@
-{ cell, inputs }@_stdArgs: {
+{ ... }@_haumeaArgs: {
   notDetected = { modulesPath, ... }@_nixosModuleArgs: {
     imports = [
       (modulesPath + "/installer/scan/not-detected.nix")

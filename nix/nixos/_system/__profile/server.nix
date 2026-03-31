@@ -1,10 +1,10 @@
 { ... }@_haumeaArgs:
 { lib, pkgs, ... }@_nixosModuleArgs: {
-  environment.systemPackages = with pkgs; [
-    btop
-    curl
-    vim
-    wget
+  environment.systemPackages = [
+    pkgs.btop
+    pkgs.curl
+    pkgs.vim
+    pkgs.wget
   ];
 
   networking.networkmanager.enable = true;
