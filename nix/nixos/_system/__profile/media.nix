@@ -142,15 +142,6 @@ in
     enable = true;
     openFirewall = true;
     inherit group user;
-    package = pkgs.jellyfin.override {
-      jellyfin-ffmpeg = pkgs.jellyfin-ffmpeg.override {
-        ffmpeg_7-full = pkgs.ffmpeg_7-full.override {
-          withMfx = false;
-          withVpl = true;
-          withUnfree = true;
-        };
-      };
-    };
   };
 
   services.lidarr = {
